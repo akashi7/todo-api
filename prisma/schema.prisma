@@ -1,0 +1,62 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["clientExtensions"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum ERole {
+  FARMER
+  ADMIN
+}
+
+enum EStatus {
+  PENDING
+  REJECTED
+  APPROVED
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  active    Boolean  @default(true)
+  role      ERole    @default(FARMER)
+  email     String?  @unique
+  password  String?
+  address   String?
+
+  fullNames String?
+
+  Farms Farm[]
+  Order Orders[]
+}
+
+model Farm {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  farmName  String
+  province  String
+  sector    String
+  landSize  String
+  userId    String   @db.ObjectId
+  user      User?    @relation(fields: [userId], references: [id])
+  Order     Orders[]
+}
+
+model Orders {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt          DateTime @default(now())
+  userId             String   @db.ObjectId
+  fertilizerQuantity Float
+  seedQuantity       Float
+  fertilizerName     String?
+  seedName           String?
+  status             EStatus  @default(PENDING)
+  farmId             String   @db.ObjectId
+  farm               Farm?    @relation(fields: [farmId], references: [id])
+  user               User?    @relation(fields: [userId], references: [id])
+}

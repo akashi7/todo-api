@@ -1,0 +1,13 @@
+services:
+  advanced_api:
+    container_name: todo_api
+    image: akashi77/todo-api
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/usr/src/app
+    environment:
+      JWT_KEY: ${JWT_KEY} 
+      DATABASE_URL: ${DATABASE_URL}
+      NODE_ENV: ${NODE_ENV} 
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
