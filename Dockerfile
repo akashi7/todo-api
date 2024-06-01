@@ -17,4 +17,4 @@ COPY --from=build /usr/src/app/yarn.lock ./yarn.lock
 COPY --from=build /usr/src/app/prisma ./prisma
 # COPY --from=build /usr/src/app/.env ./.env
 
-CMD ["yarn","dev"]
+CMD ["yarn","start"]
