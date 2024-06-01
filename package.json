@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start": "yarn build &&  prisma generate dev && node dist/index.js",
+    "start": "npx prisma generate dev && node dist/index.js",
     "dev": "npx prisma generate dev && nodemon --exec ts-node src/index.ts",
     "prisma:generate": "npx prisma generate"
   },
