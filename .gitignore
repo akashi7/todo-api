@@ -3,3 +3,16 @@ node_modules
 .env
 
 /dist
+
+
+# Jest coverage directory
+coverage/
+
+# Istanbul coverage directory
+.nyc_output/
+
+# Temporary coverage files
+*.lcov
+*.lcov.info
+*.coverage
+*.log

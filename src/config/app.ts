@@ -1,13 +1,6 @@
-import {
-  json,
-  urlencoded,
-  Request,
-  Response,
-  NextFunction,
-  Application,
-} from 'express'
-import morgan from 'morgan'
+import express, { Application, Request, Response } from 'express'
 import cors, { CorsOptions } from 'cors'
+import morgan from 'morgan'
 import { UnauthorizedException } from '../utils/exception'
 import env from './env'
 import limiter from './limiter'
@@ -17,6 +10,7 @@ export const corsConfig = (): ReturnType<typeof cors> =>
     allowedHeaders:
       'Origin, X-Requested-With, Content-Type, Accept, Authorization, Set-Cookie, Cookies',
     origin: (origin, callback) => {
+      // Add `callback` argument
       const whitelist = env.ALLOWED_ORIGINS || []
       const canAllowUndefinedOrigin =
         origin === undefined && env.NODE_ENV !== 'production'
@@ -35,9 +29,9 @@ export const corsConfig = (): ReturnType<typeof cors> =>
   } as CorsOptions)
 
 export const httpsConfig = (
-  req: Request,
-  res: Response,
-  next: NextFunction
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
 ): void => {
   if (
     req.header('x-forwarded-proto') !== 'https' &&
@@ -49,11 +43,17 @@ export const httpsConfig = (
   }
 }
 
-export const configureMiddleware = (app: Application): void => {
+export const configureMiddleware = (
+  app: Application,
+  corsFn: ReturnType<typeof corsConfig> = corsConfig()
+): void => {
   if (env.NODE_ENV === 'production') app.use(limiter)
-  app.use(corsConfig())
+  app.use(corsFn)
   app.use(morgan('dev'))
-  app.use(json())
-  app.use(urlencoded({ extended: false }))
+  app.get('/', (req: Request, res: Response) => {
+    res.send('API running!')
+  })
+  app.use(express.json())
+  app.use(express.urlencoded({ extended: false }))
   app.use(httpsConfig)
 }
