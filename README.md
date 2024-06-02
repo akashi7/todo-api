@@ -13,3 +13,4 @@
 1. ExpressJs with Typescript
 2. Prisma
 3. MongoDb
+4. Jest
