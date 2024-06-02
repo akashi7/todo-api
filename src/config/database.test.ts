@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { connectDatabase, disconnectDatabase } from './database'
 
-// Mock the PrismaClient instance
 jest.mock('@prisma/client', () => {
   const mockPrisma = {
     $connect: jest.fn().mockResolvedValue(undefined),

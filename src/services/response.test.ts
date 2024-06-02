@@ -4,7 +4,6 @@ import Response from './response'
 interface MockExpressResponse {
   status: jest.Mock<ExpressResponse>
   json: jest.Mock<ExpressResponse>
-  // Add other methods if needed
 }
 
 describe('Response', () => {

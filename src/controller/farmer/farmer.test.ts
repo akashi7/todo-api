@@ -79,7 +79,7 @@ describe('FarmerController', () => {
     it('should throw ForbiddenException if land size is invalid', async () => {
       const req: any = {
         user: { id: 1 },
-        body: { farmName: 'Test Farm', landSize: '-10' }, // Invalid land size
+        body: { farmName: 'Test Farm', landSize: '-10' },
       }
       const res: any = {}
       const next: any = jest.fn()
